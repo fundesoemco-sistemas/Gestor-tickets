@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+:root {
+  --verde-oscuro: #044c29;
+  --verde-claro: #067e56;
+  --gris-suave: #f4f6f8;
+  --gris-oscuro: #2e2e2e;
+  --blanco: #ffffff;
+  --sombra: rgba(0, 0, 0, 0.08);
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--gris-suave);
+  font-family: 'Inter', sans-serif;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background: var(--verde-oscuro);
+  color: var(--blanco);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  box-shadow: 2px 0 8px var(--sombra);
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  z-index: 1000;
+  transition: all 0.3s ease-in-out;
+  overflow-y: auto;
+}
+
+.sidebar .logo {
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.sidebar .logo a {
+  color: var(--blanco);
+  text-decoration: none;
+}
+
+.sidebar nav {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sidebar a {
+  color: #cceae4;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: var(--verde-claro);
+  color: var(--blanco);
+  font-weight: 600;
+}
+
+.sidebar a.active {
+  border-left: 4px solid var(--blanco);
+  padding-left: 0.75rem;
+}
+
+.logout-btn {
+  margin-top: 2rem;
+  background-color: #ff4d4d;
+  padding: 0.6rem;
+  border-radius: 8px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.logout-btn:hover {
+  background-color: #ff6b6b;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 2rem 2.5rem;
+  background-color: var(--gris-suave);
+  overflow-x: auto;
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- RESPONSIVE ----------- */
+@media (max-width: 768px) {
+  .sidebar {
+    left: -270px;
+    border-radius: 0;
+  }
+
+  .layout.sidebar-open .sidebar {
+    left: 0;
+    animation: slideIn 0.3s ease forwards;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 1.2rem;
+  }
+}
+
+@keyframes slideIn {
+  from { left: -270px; }
+  to { left: 0; }
+}
+
+/* Botón hamburguesa moderno */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1100;
+  font-size: 1.7rem;
+  background: var(--verde-oscuro);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  box-shadow: 0 2px 5px var(--sombra);
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.hamburger:hover {
+  background: var(--verde-claro);
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+}
+

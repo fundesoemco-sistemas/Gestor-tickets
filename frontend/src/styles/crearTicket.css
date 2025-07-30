@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+.crear-ticket-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.crear-ticket-container h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #044c29;
+  text-align: center;
+}
+
+.crear-ticket-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.crear-ticket-container input[type="text"],
+.crear-ticket-container textarea,
+.crear-ticket-container select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.6rem;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.crear-ticket-container input:focus,
+.crear-ticket-container textarea:focus,
+.crear-ticket-container select:focus {
+  border-color: #067e56;
+  outline: none;
+}
+
+.crear-ticket-container textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.crear-ticket-container button {
+  background-color: #067e56;
+  color: white;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.crear-ticket-container button:hover {
+  background-color: #044c29;
+}
+
+.crear-ticket-container p {
+  margin-top: 1rem;
+  font-weight: 500;
+  text-align: center;
+  color: #2e2e2e;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .crear-ticket-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .crear-ticket-container h2 {
+    font-size: 1.3rem;
+  }
+
+  .crear-ticket-container button {
+    font-size: 0.95rem;
+  }
+}

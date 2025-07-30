@@ -1,0 +1,78 @@
+:root {
+  --color-bg: #ffffff;
+  --color-text: #2c3e50;
+  --color-primary: #3498db;
+  --color-primary-hover: #2980b9;
+  --color-success: #2ecc71;
+  --color-danger: #e74c3c;
+  --color-border: #ddd;
+
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+
+  background-color: var(--color-bg);
+  color: var(--color-text);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Enlaces */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+/* Encabezados */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+
+/* Botones generales */
+button {
+  border-radius: 6px;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--color-primary);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 2px solid var(--color-primary-hover);
+  outline-offset: 2px;
+}
+
+/* Light mode support (opcional si usarás tema oscuro más adelante) */
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg: #ffffff;
+    --color-text: #2c3e50;
+  }
+}
