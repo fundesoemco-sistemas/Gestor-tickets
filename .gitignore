@@ -19,9 +19,7 @@ dist-ssr
 *.local
 
 # Variables de entorno
-.env
 backend/.env
-frontend/.env
 
 # Editor directories and files
 .vscode/*
