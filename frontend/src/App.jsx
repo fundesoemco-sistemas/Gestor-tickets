@@ -9,7 +9,7 @@ import CrearTicket from './components/CreateTicket';
 import ListaTickets from './components/listaTickets';
 import Dashboard from './components/admin/Dashboard';
 import UserList from './components/admin/UserList';
-import AreaList from './components/admin/AreaList';
+import AreaList from './components/admin/areaList';
 import AssignUsersToArea from './components/admin/AssignUsersToArea';
 import UsuariosPorArea from './components/admin/UsuariosPorArea';
 import AdminTickets from './components/admin/AdminTickets';
