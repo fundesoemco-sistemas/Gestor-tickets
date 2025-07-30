@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import '../../styles/admin/CrearUsuario.css';
+import '../../styles/admin/crearUsuario.css';
 const API_BASE = import.meta.env.VITE_API_URL;
 
 function CrearUsuario() {
