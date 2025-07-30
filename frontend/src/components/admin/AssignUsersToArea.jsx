@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/admin/assignUsers.css'; 
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function AssignUsersToArea() {
   const [areas, setAreas] = useState([]);
@@ -15,7 +16,7 @@ function AssignUsersToArea() {
 
   const obtenerAreas = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/areas');
+      const res = await axios.get(`${API_BASE}/api/areas`);
       setAreas(res.data);
     } catch (error) {
       console.error('Error al obtener áreas:', error);
@@ -24,7 +25,7 @@ function AssignUsersToArea() {
 
   const obtenerUsuarios = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/users');
+      const res = await axios.get(`${API_BASE}/api/users`);
       setUsuarios(res.data);
     } catch (error) {
       console.error('Error al obtener usuarios:', error);
@@ -33,7 +34,7 @@ function AssignUsersToArea() {
 
   const asignarUsuarios = async () => {
     try {
-      await axios.post(`http://localhost:3000/api/areas/${areaSeleccionada}/assign-users`, {
+      await axios.post(`${API_BASE}/api/areas/${areaSeleccionada}/assign-users`, {
         userIds: usuariosSeleccionados,
       });
       alert('✅ Usuarios asignados correctamente al área');

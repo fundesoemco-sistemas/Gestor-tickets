@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Pencil, Trash2, Plus, X } from 'lucide-react';
 import '../../styles/admin/areaList.css';
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function AreaList() {
   const [areas, setAreas] = useState([]);
@@ -15,7 +16,7 @@ function AreaList() {
 
   const fetchAreas = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/areas');
+      const res = await axios.get(`${API_BASE}/api/areas`);
       setAreas(res.data);
     } catch (error) {
       console.error('❌ Error al obtener áreas:', error);
@@ -27,7 +28,7 @@ function AreaList() {
     if (!nuevaArea.trim()) return;
 
     try {
-      await axios.post('http://localhost:3000/api/areas/create', { name: nuevaArea });
+      await axios.post(`${API_BASE}/api/areas/create`, { name: nuevaArea });
       setNuevaArea('');
       fetchAreas();
     } catch (error) {
@@ -39,7 +40,7 @@ function AreaList() {
     if (!window.confirm('¿Seguro que deseas eliminar esta área?')) return;
 
     try {
-      await axios.delete(`http://localhost:3000/api/areas/${id}`);
+      await axios.delete(`${API_BASE}/api/areas/${id}`);
       fetchAreas();
     } catch (error) {
       console.error('❌ Error al eliminar área:', error);
@@ -57,7 +58,7 @@ function AreaList() {
     if (!nuevaArea.trim() || !areaEditando) return;
 
     try {
-      await axios.put(`http://localhost:3000/api/areas/${areaEditando.id}`, {
+      await axios.put(`${API_BASE}/api/areas/${areaEditando.id}`, {
         name: nuevaArea,
       });
       setModoEdicion(false);

@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../../styles/admin/AdminTickets.css';  
+import '../../styles/admin/AdminTickets.css';
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function AdminTickets() {
   /* ---------------- state ---------------- */
   const [tickets, setTickets] = useState([]);
-  const [areas,   setAreas]   = useState([]);
+  const [areas, setAreas] = useState([]);
 
-  const [fArea, setFArea]           = useState('');
-  const [fEstado, setFEstado]       = useState('');
+  const [fArea, setFArea] = useState('');
+  const [fEstado, setFEstado] = useState('');
   const [fPrioridad, setFPrioridad] = useState('');
 
   const [edit, setEdit] = useState(null);
   const [form, setForm] = useState({
-    title:'', description:'', priority:'media',
-    status:'pendiente', area_id:''
+    title: '', description: '', priority: 'media',
+    status: 'pendiente', area_id: ''
   });
 
   /* ---------- instancia axios con token ---------- */
   const api = axios.create({
-    baseURL : 'http://localhost:3000/api',
-    headers : {
-      Authorization:`Bearer ${localStorage.getItem('token')}`
+    baseURL: `${API_BASE}/api`
+    ,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
     }
   });
 
@@ -30,8 +32,8 @@ function AdminTickets() {
 
   const fetchData = async () => {
     try {
-      const [t, a] = await Promise.all([ api.get('/tickets'),
-                                         api.get('/areas') ]);
+      const [t, a] = await Promise.all([api.get('/tickets'),
+      api.get('/areas')]);
       setTickets(t.data);
       setAreas(a.data);
     } catch (err) {
@@ -43,11 +45,11 @@ function AdminTickets() {
   const openEdit = (t) => {
     setEdit(t);
     setForm({
-      title       : t.title,
-      description : t.description,
-      priority    : t.priority,
-      status      : t.status,
-      area_id     : t.area_id
+      title: t.title,
+      description: t.description,
+      priority: t.priority,
+      status: t.status,
+      area_id: t.area_id
     });
   };
 
@@ -76,10 +78,10 @@ function AdminTickets() {
   };
 
   /* ---------- aplicar filtros ---------- */
-  const filtrados = tickets.filter(t=>{
-    const okArea  = fArea      ? String(t.area_id) === fArea : true;
-    const okEst   = fEstado    ? t.status   === fEstado     : true;
-    const okPrio  = fPrioridad ? t.priority === fPrioridad  : true;
+  const filtrados = tickets.filter(t => {
+    const okArea = fArea ? String(t.area_id) === fArea : true;
+    const okEst = fEstado ? t.status === fEstado : true;
+    const okPrio = fPrioridad ? t.priority === fPrioridad : true;
     return okArea && okEst && okPrio;
   });
 
@@ -89,17 +91,17 @@ function AdminTickets() {
       <h2>Todos los Tickets</h2>
 
       {/* ▸ Filtros */}
-      <div style={{ display:'flex', gap:'1rem', flexWrap:'wrap', marginBottom:'1rem' }}>
+      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
         {/* Área */}
-        <select value={fArea} onChange={e=>setFArea(e.target.value)}>
+        <select value={fArea} onChange={e => setFArea(e.target.value)}>
           <option value=''>Todas las áreas</option>
-          {areas.map(a=>(
+          {areas.map(a => (
             <option key={a.id} value={a.id}>{a.name}</option>
           ))}
         </select>
 
         {/* Estado */}
-        <select value={fEstado} onChange={e=>setFEstado(e.target.value)}>
+        <select value={fEstado} onChange={e => setFEstado(e.target.value)}>
           <option value=''>Todos los estados</option>
           <option value='pendiente'>Pendiente</option>
           <option value='en_proceso'>En proceso</option>
@@ -107,7 +109,7 @@ function AdminTickets() {
         </select>
 
         {/* Prioridad */}
-        <select value={fPrioridad} onChange={e=>setFPrioridad(e.target.value)}>
+        <select value={fPrioridad} onChange={e => setFPrioridad(e.target.value)}>
           <option value=''>Todas las prioridades</option>
           <option value='baja'>Baja</option>
           <option value='media'>Media</option>
@@ -124,7 +126,7 @@ function AdminTickets() {
           </tr>
         </thead>
         <tbody>
-          {filtrados.map(t=>(
+          {filtrados.map(t => (
             <tr key={t.id}>
               <td>{t.id}</td>
               <td>{t.title}</td>
@@ -133,8 +135,8 @@ function AdminTickets() {
               <td>{t.status}</td>
               <td>{t.user_name}</td>
               <td>
-                <button onClick={()=>openEdit(t)}>✏️</button>
-                <button onClick={()=>remove(t.id)}>🗑️</button>
+                <button onClick={() => openEdit(t)}>✏️</button>
+                <button onClick={() => remove(t.id)}>🗑️</button>
               </td>
             </tr>
           ))}
@@ -148,38 +150,38 @@ function AdminTickets() {
             <h3>Editar Ticket #{edit.id}</h3>
 
             <input value={form.title}
-                   onChange={e=>setForm({...form,title:e.target.value})}
-                   placeholder="Título" />
+              onChange={e => setForm({ ...form, title: e.target.value })}
+              placeholder="Título" />
 
             <textarea value={form.description}
-                      onChange={e=>setForm({...form,description:e.target.value})}
-                      placeholder="Descripción" />
+              onChange={e => setForm({ ...form, description: e.target.value })}
+              placeholder="Descripción" />
 
             <select value={form.priority}
-                    onChange={e=>setForm({...form,priority:e.target.value})}>
+              onChange={e => setForm({ ...form, priority: e.target.value })}>
               <option value="baja">Baja</option>
               <option value="media">Media</option>
               <option value="alta">Alta</option>
             </select>
 
             <select value={form.status}
-                    onChange={e=>setForm({...form,status:e.target.value})}>
+              onChange={e => setForm({ ...form, status: e.target.value })}>
               <option value="pendiente">Pendiente</option>
               <option value="en_proceso">En proceso</option>
               <option value="cerrado">Cerrado</option>
             </select>
 
             <select value={form.area_id}
-                    onChange={e=>setForm({...form,area_id:e.target.value})}>
+              onChange={e => setForm({ ...form, area_id: e.target.value })}>
               <option value="">-- Área --</option>
-              {areas.map(a=>(
+              {areas.map(a => (
                 <option key={a.id} value={a.id}>{a.name}</option>
               ))}
             </select>
 
             <div className="modal-buttons">
               <button onClick={save}>Guardar</button>
-              <button onClick={()=>setEdit(null)}>Cancelar</button>
+              <button onClick={() => setEdit(null)}>Cancelar</button>
             </div>
           </div>
         </div>

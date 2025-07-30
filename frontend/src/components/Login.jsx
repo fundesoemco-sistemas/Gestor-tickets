@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/login.css';
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
@@ -12,7 +13,8 @@ function Login({ onLoginSuccess }) {
     setError('');
 
     try {
-      const res = await axios.post('http://localhost:3000/api/login', {
+      const res = await axios.post(`${API_BASE}/api/login`
+, {
         email: email.trim().toLowerCase(),
         password,
       });

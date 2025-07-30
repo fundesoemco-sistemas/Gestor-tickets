@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/admin/UserList.css';
 import { FaEdit, FaTrash, FaPlus, FaCheck, FaTimes } from 'react-icons/fa';
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function UserList() {
   const [usuarios, setUsuarios] = useState([]);
@@ -15,7 +16,7 @@ function UserList() {
   const token = localStorage.getItem('token');
 
   const axiosAuth = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: `${API_BASE}/api`,
     headers: {
       Authorization: `Bearer ${token}`
     }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/admin/usuariosPorArea.css';
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function UsuariosPorArea() {
   const [areas, setAreas] = useState([]);
@@ -9,13 +10,13 @@ function UsuariosPorArea() {
 
   const token = localStorage.getItem('token');
   const axiosAuth = axios.create({
-    baseURL: 'http://localhost:3000',
+    baseURL: `${API_BASE}`,
     headers: { Authorization: `Bearer ${token}` },
   });
 
   useEffect(() => {
     axios
-      .get('http://localhost:3000/api/areas')
+      .get(`${API_BASE}/api/areas`)
       .then((res) => setAreas(res.data))
       .catch((err) => console.error('❌ Error al obtener áreas:', err));
   }, []);

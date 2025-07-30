@@ -3,10 +3,11 @@ import axios from 'axios';
 import DetalleTicket from './DetalleTicket';
 import '../styles/listaTicket.css';
 import { jwtDecode } from 'jwt-decode';
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function ListaTickets() {
   const api = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: `${API_BASE}/api`,
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token') || ''}`
     }

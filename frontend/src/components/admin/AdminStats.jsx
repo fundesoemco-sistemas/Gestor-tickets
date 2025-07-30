@@ -9,6 +9,7 @@ import { FaClock } from 'react-icons/fa';
 import '../../styles/admin/adminStats.css';
 
 const COLORS = ['#0088FE', '#00C49F', '#FF8042', '#FFBB28'];
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function AdminStats() {
   const [stats, setStats] = useState(null);
@@ -17,7 +18,9 @@ function AdminStats() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/tickets/stats');
+        const res = await axios.get(`
+${API_BASE}/api/tickets/stats`
+        );
         setStats(res.data);
       } catch (err) {
         console.error('❌ Error cargando estadísticas:', err);

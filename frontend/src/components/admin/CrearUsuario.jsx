@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import '../../styles/admin/CrearUsuario.css';
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function CrearUsuario() {
   const [formData, setFormData] = useState({
@@ -34,7 +35,7 @@ function CrearUsuario() {
     try {
       const token = localStorage.getItem('token');
 
-      await axios.post('http://localhost:3000/api/users', formData, {
+      await axios.post(`${API_BASE}/api/users`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

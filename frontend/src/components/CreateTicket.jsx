@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+const API_BASE = import.meta.env.VITE_API_URL;
 import axios from 'axios';
 import '../styles/crearTicket.css';
 
@@ -19,7 +20,7 @@ function CrearTicket() {
   useEffect(() => {
     const fetchAreas = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/areas');
+        const res = await axios.get(`${API_BASE}/api/areas`);
         setAreas(res.data);
       } catch (error) {
         console.error('Error al cargar áreas:', error);
@@ -34,11 +35,11 @@ function CrearTicket() {
       if (!ticket.area_id) {
         setUsuarios([]);
         return;
-      }
+      }  
 
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:3000/api/users/encargados/${ticket.area_id}`, {
+        const res = await axios.get(`${API_BASE}/api/users/encargados/${ticket.area_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsuarios(res.data);
@@ -66,7 +67,7 @@ function CrearTicket() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:3000/api/tickets', ticket, {
+      await axios.post(`${API_BASE}/api/tickets`, ticket, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
