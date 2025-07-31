@@ -9,6 +9,7 @@ import { FaClock } from 'react-icons/fa';
 import '../../styles/admin/adminStats.css';
 
 const COLORS = ['#0088FE', '#00C49F', '#FF8042', '#FFBB28'];
+// variable para uso de back en render
 const API_BASE = import.meta.env.VITE_API_URL;
 
 function AdminStats() {
