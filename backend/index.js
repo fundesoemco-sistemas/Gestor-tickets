@@ -12,23 +12,26 @@ const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
-// CORS: permitir Vercel
+// CORS: permitir solo desde Vercel
 const allowedOrigins = ['https://gestor-tickets-blue.vercel.app'];
 
-app.use(cors({
+const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
+      callback(null, true);
+    } else {
+      callback(new Error('No autorizado por CORS'));
     }
-    return callback(new Error('No autorizado por CORS'));
   },
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-}));
+};
 
-// ✅ Esta línea es esencial para que Render acepte preflight
-app.options('*', cors());
+app.use(cors(corsOptions));
+
+// ✅ Preflight (opciones)
+app.options('*', cors(corsOptions));
 
 app.use(express.json());
 
@@ -39,12 +42,13 @@ app.use('/api/user-areas', userAreaRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api', authRoutes);
 
-// Conexión DB
+// Conexión a PostgreSQL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
 });
 
+// Ruta raíz de prueba
 app.get('/', async (req, res) => {
   try {
     const result = await pool.query('SELECT NOW()');
@@ -53,6 +57,11 @@ app.get('/', async (req, res) => {
     console.error('❌ Error de conexión:', error);
     res.status(500).send('Error al conectar con la base de datos');
   }
+});
+
+// Fallback: ruta no encontrada
+app.use((req, res) => {
+  res.sendStatus(404); // También podrías usar res.status(404).send('Ruta no encontrada')
 });
 
 app.listen(process.env.PORT, () => {
