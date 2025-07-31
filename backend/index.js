@@ -31,6 +31,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // ✅ Preflight (opciones)
+// oculto esta linea para pruena de deploy
 //app.options('*', cors(corsOptions));
 
 app.use(express.json());
