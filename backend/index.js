@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const app = express();
 
-// CORS restringido a Vercel
+// ✅ CORS robusto: habilita origin desde Vercel + manejo de preflight
 const allowedOrigins = ['https://gestor-tickets-blue.vercel.app'];
 
 const corsOptions = {
@@ -13,7 +13,7 @@ const corsOptions = {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('No autorizado por CORS'));
+      callback(new Error('CORS bloqueado: origen no autorizado'));
     }
   },
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -22,23 +22,23 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // ✅ Responde a preflight OPTIONS
 app.use(express.json());
 
 // =======================================================
-// 🔻 BLOQUE DE RUTAS COMENTADAS PARA DEPURACIÓN PASO A PASO
+// ✅ BLOQUE DE RUTAS ACTIVAS
 // =======================================================
+const ticketRoutes = require('./routes/ticketRoutes');
+const areaRoutes = require('./routes/areaRoutes');
+const authRoutes = require('./routes/authRoutes');
+const userAreaRoutes = require('./routes/userAreaRoutes');
+const userRoutes = require('./routes/userRoutes');
 
- const ticketRoutes = require('./routes/ticketRoutes');
- const areaRoutes = require('./routes/areaRoutes');
- const authRoutes = require('./routes/authRoutes');
- const userAreaRoutes = require('./routes/userAreaRoutes');
- const userRoutes = require('./routes/userRoutes');
-
- app.use('/api/areas', areaRoutes);
- app.use('/api/tickets', ticketRoutes);
- app.use('/api/user-areas', userAreaRoutes);
- app.use('/api/users', userRoutes);
- app.use('/api', authRoutes);
+app.use('/api/areas', areaRoutes);
+app.use('/api/tickets', ticketRoutes);
+app.use('/api/user-areas', userAreaRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api', authRoutes);
 
 // =======================================================
 
