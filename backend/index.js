@@ -1,21 +1,22 @@
 const express = require('express');
+const cors = require('cors');
+const { Pool } = require('pg');
+require('dotenv').config();
+
+// Rutas
 const ticketRoutes = require('./routes/ticketRoutes');
 const areaRoutes = require('./routes/areaRoutes');
 const authRoutes = require('./routes/authRoutes');
 const userAreaRoutes = require('./routes/userAreaRoutes');
 const userRoutes = require('./routes/userRoutes');
-const cors = require('cors');
-const { Pool } = require('pg');
-require('dotenv').config();
 
 const app = express();
 
-// CORS: permitir tu frontend de Vercel
+// CORS: permitir Vercel
 const allowedOrigins = ['https://gestor-tickets-blue.vercel.app'];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Permitir llamadas desde herramientas internas (como Postman) sin 'origin'
     if (!origin || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
@@ -26,23 +27,24 @@ app.use(cors({
   credentials: true,
 }));
 
+// ✅ Esta línea es esencial para que Render acepte preflight
+app.options('*', cors());
+
 app.use(express.json());
 
+// Rutas
 app.use('/api/areas', areaRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/user-areas', userAreaRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api', authRoutes);
 
-// Conexión a PostgreSQL
+// Conexión DB
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl: { rejectUnauthorized: false },
 });
 
-// Ruta raíz para validar conexión
 app.get('/', async (req, res) => {
   try {
     const result = await pool.query('SELECT NOW()');
