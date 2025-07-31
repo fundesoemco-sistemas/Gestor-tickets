@@ -30,7 +30,7 @@ app.use(express.json());
 
  const ticketRoutes = require('./routes/ticketRoutes');
  const areaRoutes = require('./routes/areaRoutes');
-// const authRoutes = require('./routes/authRoutes');
+ const authRoutes = require('./routes/authRoutes');
 // const userAreaRoutes = require('./routes/userAreaRoutes');
  const userRoutes = require('./routes/userRoutes');
 
@@ -38,7 +38,7 @@ app.use(express.json());
  app.use('/api/tickets', ticketRoutes);
 // app.use('/api/user-areas', userAreaRoutes);
  app.use('/api/users', userRoutes);
-// app.use('/api', authRoutes);
+ app.use('/api', authRoutes);
 
 // =======================================================
 
