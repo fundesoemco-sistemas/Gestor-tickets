@@ -5,9 +5,9 @@ require('dotenv').config();
 
 const app = express();
 
-// =======================================================
+
 // ✅ CORS robusto: habilita origin desde Vercel + preflight OPTIONS
-// =======================================================
+
 
 const allowedOrigins = ['https://gestor-tickets-blue.vercel.app'];
 
@@ -29,9 +29,9 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // ✅ Maneja preflight
 app.use(express.json());
 
-// =======================================================
+
 // ✅ RUTAS ACTIVAS
-// =======================================================
+
 
 const ticketRoutes = require('./routes/ticketRoutes');
 const areaRoutes = require('./routes/areaRoutes');
