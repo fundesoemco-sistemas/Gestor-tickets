@@ -54,6 +54,44 @@ router.get('/mis-tickets', verifyToken, async (req, res) => {
   }
 });
 
+// 📤 Exportar tickets asignados a un usuario en formato Excel
+router.get('/export', verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const result = await pool.query(
+      `SELECT t.id, t.title AS titulo, t.description AS descripcion, t.status AS estado, t.created_at
+       FROM tickets t
+       WHERE t.user_id = $1
+       ORDER BY t.created_at DESC`,
+      [userId]
+    );
+
+    const ExcelJS = require('exceljs');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Mis Tickets');
+
+    worksheet.columns = [
+      { header: 'ID', key: 'id', width: 10 },
+      { header: 'Título', key: 'titulo', width: 30 },
+      { header: 'Descripción', key: 'descripcion', width: 40 },
+      { header: 'Estado', key: 'estado', width: 15 },
+      { header: 'Fecha de Creación', key: 'created_at', width: 25 },
+    ];
+
+    worksheet.addRows(result.rows);
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=tickets.xlsx');
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    console.error('❌ Error exportando tickets:', error);
+    res.status(500).json({ message: 'Error exportando tickets' });
+  }
+});
+
 // 1. CREAR TICKET
 router.post('/', verifyToken, async (req, res) => {
   const { title, description, priority = 'media', area_id } = req.body;

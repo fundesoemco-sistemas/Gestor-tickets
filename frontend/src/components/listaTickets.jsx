@@ -3,6 +3,7 @@ import axios from 'axios';
 import DetalleTicket from './DetalleTicket';
 import '../styles/listaTicket.css';
 import { jwtDecode } from 'jwt-decode';
+import ExportButton from './ExportButton';
 const API_BASE = import.meta.env.VITE_API_URL;
 
 function ListaTickets() {
@@ -118,12 +119,19 @@ function ListaTickets() {
   return (
     <div className="contenedor-tickets">
       <h2>Mis Tickets Creados</h2>
-      <select value={filtroEstado} onChange={e => setFiltroEstado(e.target.value)}>
-        <option value="">Todos</option>
-        <option value="pendiente">Pendiente</option>
-        <option value="en_proceso">En proceso</option>
-        <option value="cerrado">Cerrado</option>
-      </select>
+
+      <div className="filtro-export-container">
+        <select value={filtroEstado} onChange={e => setFiltroEstado(e.target.value)}>
+          <option value="">Todos</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="en_proceso">En proceso</option>
+          <option value="cerrado">Cerrado</option>
+        </select>
+
+        {/* 📥 Botón para exportar tickets a Excel */}
+        <ExportButton />
+      </div>
+
       <div className="ticket-table">
         {renderTabla(aplicarFiltros(tickets.creados))}
       </div>
@@ -140,6 +148,7 @@ function ListaTickets() {
       )}
     </div>
   );
+
 }
 
 export default ListaTickets;
