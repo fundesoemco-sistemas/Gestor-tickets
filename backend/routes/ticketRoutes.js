@@ -54,12 +54,15 @@ router.get('/mis-tickets', verifyToken, async (req, res) => {
   }
 });
 
-// 📤 Exportar tickets asignados a un usuario en formato Excel
-router.get('/export', verifyToken, async (req, res) => {
+// 📤 Exportar todos los tickets del usuario (creados y asignados) en Excel
+router.get('/export/completo', verifyToken, async (req, res) => {
   try {
     const userId = req.user.id;
+    const ExcelJS = require('exceljs');
+    const workbook = new ExcelJS.Workbook();
 
-    const result = await pool.query(
+    // 🟢 Hoja 1: Mis Tickets Creados
+    const creados = await pool.query(
       `SELECT t.id, t.title AS titulo, t.description AS descripcion, t.status AS estado, t.created_at
        FROM tickets t
        WHERE t.user_id = $1
@@ -67,30 +70,43 @@ router.get('/export', verifyToken, async (req, res) => {
       [userId]
     );
 
-    const ExcelJS = require('exceljs');
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Mis Tickets');
-
-    worksheet.columns = [
+    const hojaCreados = workbook.addWorksheet('Mis Tickets');
+    hojaCreados.columns = [
       { header: 'ID', key: 'id', width: 10 },
       { header: 'Título', key: 'titulo', width: 30 },
       { header: 'Descripción', key: 'descripcion', width: 40 },
       { header: 'Estado', key: 'estado', width: 15 },
       { header: 'Fecha de Creación', key: 'created_at', width: 25 },
     ];
+    hojaCreados.addRows(creados.rows);
 
-    worksheet.addRows(result.rows);
+    // 🔵 Hoja 2: Asignados a mi área
+    const asignados = await pool.query(
+      `SELECT t.id, t.title AS titulo, t.description AS descripcion, t.status AS estado, t.created_at
+       FROM tickets t
+       WHERE t.user_id <> $1 AND t.area_id IN (
+         SELECT area_id FROM user_areas WHERE user_id = $1
+       )
+       ORDER BY t.created_at DESC`,
+      [userId]
+    );
 
+    const hojaAsignados = workbook.addWorksheet('Asignados a Mi Área');
+    hojaAsignados.columns = hojaCreados.columns;
+    hojaAsignados.addRows(asignados.rows);
+
+    // 🧾 Descargar
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename=tickets.xlsx');
+    res.setHeader('Content-Disposition', 'attachment; filename=todos_mis_tickets.xlsx');
 
     await workbook.xlsx.write(res);
     res.end();
   } catch (error) {
-    console.error('❌ Error exportando tickets:', error);
-    res.status(500).json({ message: 'Error exportando tickets' });
+    console.error('❌ Error exportando tickets completos:', error);
+    res.status(500).json({ message: 'Error al exportar tickets completos' });
   }
 });
+
 
 // 1. CREAR TICKET
 router.post('/', verifyToken, async (req, res) => {
