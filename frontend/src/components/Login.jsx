@@ -13,17 +13,22 @@ function Login({ onLoginSuccess }) {
     setError('');
 
     try {
-      const res = await axios.post(`${API_BASE}/api/login`
-, {
-        email: email.trim().toLowerCase(),
-        password,
-      });
+      const res = await axios.post(
+        `${API_BASE}/api/login`,
+        {
+          email: email.trim().toLowerCase(),
+          password,
+        },
+        {
+          withCredentials: true, // 🔥 Necesario para que CORS con credenciales funcione
+        }
+      );
 
       const { token, user } = res.data;
 
       // Guardar token y pasar datos del usuario a App
       localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // ✅ NUEVA LÍNEA
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       onLoginSuccess(user);
 
     } catch (err) {
@@ -37,7 +42,7 @@ function Login({ onLoginSuccess }) {
     }
   };
 
-   return (
+  return (
     <div className="login-wrapper">
       <div className="login-container">
         <h2>Iniciar Sesión</h2>
