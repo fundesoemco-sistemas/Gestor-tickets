@@ -45,9 +45,7 @@ app.use('/api/user-areas', userAreaRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api', authRoutes);
 
-// =======================================================
 // ✅ Conexión a PostgreSQL
-// =======================================================
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
